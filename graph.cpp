@@ -173,6 +173,40 @@ void graph::remEdge(char first, char second) {
     cout << "Second vertex doesn't exist" << endl;
     return;
   }
+  
+  //Now, if both exist, update connection on the first
+  edge* previous1 = NULL;
+  edge* current1 = AdjList[firstIndex] -> connections;
+
+  while (current1 != NULL && current1 -> to -> label != second) {
+    previous1 = current1;
+    current1 = current1 -> next;
+  }
+
+  if (current1 != NULL && current1 == AdjList[firstIndex] -> connections) {
+    AdjList[firstIndex] -> connections = current1 -> next; //remove connection to second vertex
+  }
+  else if (current1 != NULL) {
+    previous1 -> next = current1 -> next;
+  }
+  
+  
+  //Now, if both exist, update connection on the second
+  edge* previous2 = NULL;
+  edge* current2 = AdjList[secIndex] -> connections;
+
+  while (current2 != NULL && current2 -> to -> label != first) {
+    previous2 = current2;
+    current2 = current2 -> next;
+  }
+
+  if (current2 != NULL && current2 == AdjList[secIndex] -> connections) {
+    AdjList[secIndex] -> connections = current2 -> next; //remove connection to second vertex
+  }
+  else if (current2 != NULL) {
+    previous2 -> next = current2 -> next;
+  }
+  return;
 }
 
 void graph::print() {
