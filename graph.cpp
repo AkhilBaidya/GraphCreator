@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cstring>
+#include "graph.h";
 
 using namespace std;
 
