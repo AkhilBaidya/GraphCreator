@@ -33,7 +33,7 @@ void graph::addVertex(char input) {
   
   int i = 0;
 
-  while (AdjList[i] != NULL & i != 20) {
+  while (AdjList[i] != NULL && i != 20) {
     i+=1;
   }
 
@@ -50,7 +50,7 @@ void graph::addVertex(char input) {
 void graph::remVertex(char input) {
   //First remove vertex from list:
   int i = 0;
-  while ((AdjList[i] -> point).label != input && i != 20) {
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != input && i != 20) {
     i++;
   }
   if (i != 20) {
@@ -80,6 +80,39 @@ void graph::remVertex(char input) {
 }
 
 void graph::addEdge(char first, char second) {
+  //First check if first is in table and get its index
+  int i = 0;
+  int firstIndex;
+  while (AdjList[i] != NULL && AdjList[i] -> point != first && i != 20) {
+    i++;
+  }
+  if (i != 20 && AdjList[i] != NULL) {
+    firstIndex = i;
+  }
+  else {
+    cout << "First vertex doesn't exist" << endl;
+    return;
+  }
+
+  //Second check if second is in table and get its index
+  i = 0;
+  int secIndex;
+  while (AdjList[i] != NULL && AdjList[i] -> point != second && i != 20) {
+    i++;
+  }
+  if (i != 20 && AdjList[i] != NULL) {
+    secIndex = i;
+  }
+  else {
+    cout << "Second vertex doesn't exist" << endl;
+    return;
+  }
+
+  //Now, if both exist, update connection on the first
+
+
+  //Now, if both exist, update connection on the second
+  
 }
 
 void graph::remEdge(char first, char second) {
