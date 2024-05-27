@@ -62,15 +62,21 @@ void graph::remVertex(char input) {
     if (AdjList[i] != NULL && AdjList[i] -> connections != NULL) {
 
       //remove edge from connections linked list
-      edge* previous;
-      edge* current;
-      previous = AdjList[i] -> connections;
-      current = previous;
+      edge* previous = NULL;
+      edge* current = AdjList[i] -> connections;
 
-      
+      while (current != NULL && current -> point -> label != input) {
+	previous = current;
+	current = current -> next;
+      }
+      if (current != NULL && current == AdjList[i] -> connections) {
+	AdjList[i] -> connections = current -> next;
+      }
+      else if (current != NULL) {
+	previous -> next = current -> next;
+      }
     }
   }
-  
 }
 
 void graph::addEdge(char first, char second) {
