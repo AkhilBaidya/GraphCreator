@@ -33,5 +33,5 @@ class graph {
   void shortestPath(char first, char last);
   
  private:
-  location list[20]; //adjacency list
+  location* list[20]; //adjacency list
 };
