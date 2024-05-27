@@ -1,4 +1,6 @@
 /*The graph class*/
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include <iostream>
 #include <cstring>
@@ -36,3 +38,5 @@ class graph {
  private:
   location* AdjList[20]; //adjacency list
 };
+
+#endif
