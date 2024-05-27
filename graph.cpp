@@ -210,7 +210,60 @@ void graph::remEdge(char first, char second) {
 }
 
 void graph::print() {
+  //column names:
+  cout << "| |";
+  for (int i = 0; i < 20; i++) {
+    cout << "|";
+
+    if (AdjList[i] != NULL) {
+      cout << (AdjList[i] -> point).label;
+    }
+    else {
+      cout << " ";
+    }
+
+    cout << "|";
+  }
+
+  //the rows:
+  for (int i = 0; i < 20; i++) {
+    cout << "|";
+
+    if (AdjList[i] != NULL) {
+      cout << (AdjList[i] -> point).label;
+    }
+    else {
+      cout << " ";
+    }
+    cout << "|";
+
+    for (int j = 0; j < 20; j++) {
+      int connect;
+
+      edge* current = AdjList[i] -> connections;
+
+      if (current -> to == &(AdjList[j] -> point)) {
+	connect = current -> weight;
+      }
+      else {
+      while (current != NULL && current -> to != &(AdjList[j] -> point)) {
+	current = current -> next;
+      }
+
+      if (current != NULL) {
+	connect = current -> weight;
+      }
+      else {
+	connect = -1;
+      }
+      cout << "|" << connect << "|";
+      }
+    }
+    cout << endl;
+  }
 }
 
 void graph::shortestPath(char first, char last) {
+
+  
 }
