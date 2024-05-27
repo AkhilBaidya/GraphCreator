@@ -146,6 +146,33 @@ void graph::addEdge(char first, char second, int input) {
 }
 
 void graph::remEdge(char first, char second) {
+  //First check if first is in table and get its index
+  int i = 0;
+  int firstIndex;
+  while (AdjList[i] != NULL && AdjList[i] -> point != first && i != 20) {
+    i++;
+  }
+  if (i != 20 && AdjList[i] != NULL) {
+    firstIndex = i;
+  }
+  else {
+    cout << "First vertex doesn't exist" << endl;
+    return;
+  }
+
+  //Second check if second is in table and get its index
+  i = 0;
+  int secIndex;
+  while (AdjList[i] != NULL && AdjList[i] -> point != second && i != 20) {
+    i++;
+  }
+  if (i != 20 && AdjList[i] != NULL) {
+    secIndex = i;
+  }
+  else {
+    cout << "Second vertex doesn't exist" << endl;
+    return;
+  }
 }
 
 void graph::print() {
