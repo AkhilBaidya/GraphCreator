@@ -48,21 +48,39 @@ void graph::addVertex(char input) {
 }
 
 void graph::remVertex(char input) {
+  //First remove vertex from list:
+  int i = 0;
+  while ((AdjList[i] -> point).label != input && i != 20) {
+    i++;
+  }
+  if (i != 20) {
+    AdjList[i] = NULL;
+  }
 
+  //Next remove all connections to that vertex:
+  for (int j = 0; j < 20; j++) {
+    if (AdjList[i] != NULL && AdjList[i] -> connections != NULL) {
+
+      //remove edge from connections linked list
+      edge* previous;
+      edge* current;
+      previous = AdjList[i] -> connections;
+      current = previous;
+
+      
+    }
+  }
+  
 }
 
 void graph::addEdge(char first, char second) {
-
 }
 
 void graph::remEdge(char first, char second) {
-
 }
 
 void graph::print() {
-
 }
 
 void graph::shortestPath(char first, char last) {
-
 }
