@@ -79,7 +79,7 @@ void graph::remVertex(char input) {
   }
 }
 
-void graph::addEdge(char first, char second) {
+void graph::addEdge(char first, char second, int input) {
   //First check if first is in table and get its index
   int i = 0;
   int firstIndex;
@@ -109,10 +109,40 @@ void graph::addEdge(char first, char second) {
   }
 
   //Now, if both exist, update connection on the first
-
-
-  //Now, if both exist, update connection on the second
+  edge* toSecond;
+  toSecond -> to = &(AdjList[firstIndex] -> point);
+  toSecond -> weight = input;
   
+  edge* current1 = AdjList[firstIndex] -> connections;
+  if (current1 == NULL) {
+    AdjList[firstIndex] -> connections = toSecond;
+  }
+  else {
+    while (current1 -> next != NULL) {
+      current1 = current1 -> next;
+    }
+
+    current1 -> next = toSecond;
+  }
+  
+  //Now, if both exist, update connection on the second
+  edge* toFirst;
+  toFirst -> to = &(AdjList[secIndex] -> point);
+  toFirst -> weight = input;
+  
+  edge* current2 = AdjList[secIndex] -> connections;
+  if (current2 == NULL) {
+    AdjList[secIndex] -> connections = toFirst;
+  }
+  else {
+    while (current2 -> next != NULL) {
+      current2 = current2 -> next;
+    }
+
+    current2 -> next = toFirst;
+  }
+
+  return;
 }
 
 void graph::remEdge(char first, char second) {
