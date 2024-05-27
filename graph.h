@@ -15,8 +15,10 @@ struct edge {
 };
 
 struct location {
-
-}
+  int visited;
+  vertex point;
+  edge* connections;
+};
 
 class graph {
 
@@ -31,5 +33,5 @@ class graph {
   void shortestPath(char first, char last);
   
  private:
-  
+  location list[20]; //adjacency list
 };
