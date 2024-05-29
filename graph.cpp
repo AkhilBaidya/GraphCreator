@@ -385,12 +385,11 @@ void graph::shortestPath(char first, char last) {
  
   //loop and update this table
   bool stop = true;
+  
   while (stop) {
-    AdjList[visiting] -> visited = 1;
-
-      if (AdjList[i] != NULL) {
-
-	edge* current = AdjList[i] -> connections;
+      if (AdjList[visiting] != NULL) {
+	AdjList[visiting] -> visited = 1;
+	edge* current = AdjList[visiting] -> connections;
 	edge* best = NULL;
 	int bestInd = -1;
 
@@ -437,5 +436,40 @@ void graph::shortestPath(char first, char last) {
     } 
   }
 
+  //Read it out:
+  int shortLen = dist[secIndex];
+  char path[20];
+  int pathEnd = 0; //index in path where it ends
+  int toAdd = secIndex;
+  path[pathEnd] = (AdjList[secIndex] -> point).label;
+  pathEnd++;
+  
+  while (toAdd != firstIndex) {
+    path[pathEnd] = prevVert[toAdd];
+    for (int i = 0; i < 20; i++) {
+      if (AdjList[i] != NULL && (AdjList[i] -> point).label == prevVert[toAdd]) {
+	toAdd = i;
+      }
+    }
+    pathEnd++;
+  }
+
+  if (shortLen != 9999) {
+
+    cout << "The shortest path from " << (AdjList[firstIndex] -> point).label << "to " << (AdjList[secIndex] -> point).label << ":"<< endl;
+
+  for (int i = pathEnd; i > 0; i--) {
+
+    cout << path[i] << "-";
+  
+  }
+  cout << endl;
+  cout << "With distance: " << shortLen;
+  }
+
+  else {
+    cout << "No such path" << endl;
+  }
+  
   return;
 }
