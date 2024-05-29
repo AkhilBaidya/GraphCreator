@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <cstring>
-#include "graph.h";
+#include "graph.h"
 
 using namespace std;
 
@@ -19,12 +19,13 @@ graph::~graph() {
 //Adding a vertex to the graph (max 20 allowed):
 void graph::addVertex(char input) {
 
+  cout << "entered function:" << endl;
   //Create location struct out of vertex
 
   vertex wrapInput;
   wrapInput.label = input; //vertex
 
-  location* loc;
+  location* loc = new location();
   loc -> visited = 0;
   loc -> point = wrapInput;
   loc -> connections = NULL; //create location
@@ -39,6 +40,7 @@ void graph::addVertex(char input) {
   }
 
   if (i != 20) {
+    cout << "here" << endl;
     AdjList[i] = loc;
   }
 
@@ -48,7 +50,7 @@ void graph::addVertex(char input) {
   }
 }
 
-void graph::remVertex(char input) {
+void graph::remVertex(char input) { //not working
   //First remove vertex from list:
   int i = 0;
   while (AdjList[i] != NULL && (AdjList[i] -> point).label != input && i != 20) {
@@ -57,25 +59,31 @@ void graph::remVertex(char input) {
   if (i != 20) {
     AdjList[i] = NULL;
   }
-
+  cout << "removed vertex now remove connections" << endl;
   //Next remove all connections to that vertex:
   for (int j = 0; j < 20; j++) {
-    if (AdjList[i] != NULL && AdjList[i] -> connections != NULL) {
-
+    if (AdjList[j] != NULL && AdjList[j] -> connections != NULL) {
+      cout << "valid" << endl;
       //remove edge from connections linked list
       edge* previous = NULL;
-      edge* current = AdjList[i] -> connections;
+      edge* current = AdjList[j] -> connections;
 
-      while (current != NULL && current -> point -> label != input) {
+      if (current != NULL && current -> to -> label == input) {
+	AdjList[j] -> connections = NULL;
+      }
+      else { 
+      while (current != NULL && current -> to -> label != input) {
 	previous = current;
 	current = current -> next;
       }
-      if (current != NULL && current == AdjList[i] -> connections) {
-	AdjList[i] -> connections = current -> next;
+      if (current != NULL && current == AdjList[j] -> connections) {
+	AdjList[j] -> connections = current -> next;
       }
       else if (current != NULL) {
 	previous -> next = current -> next;
       }
+    }
+
     }
   }
 }
@@ -83,8 +91,9 @@ void graph::remVertex(char input) {
 void graph::addEdge(char first, char second, int input) {
   //First check if first is in table and get its index
   int i = 0;
-  int firstIndex;
-  while (AdjList[i] != NULL && AdjList[i] -> point != first && i != 20) {
+  int firstIndex = 0;
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != first && i != 20) {
+    cout << "going" << endl;
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -97,26 +106,34 @@ void graph::addEdge(char first, char second, int input) {
 
   //Second check if second is in table and get its index
   i = 0;
-  int secIndex;
-  while (AdjList[i] != NULL && AdjList[i] -> point != second && i != 20) {
+  int secIndex = 0;
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != second && i != 20) {
+    cout << "going 2" << endl;
     i++;
   }
+  cout << "exited loop" << endl;
   if (i != 20 && AdjList[i] != NULL) {
     secIndex = i;
+    cout << "met criteria" << endl;
   }
   else {
     cout << "Second vertex doesn't exist" << endl;
     return;
   }
 
+  //cout << firstIndex;
+  //cout << secIndex;
+
   //Now, if both exist, update connection on the first
-  edge* toSecond;
-  toSecond -> to = &(AdjList[firstIndex] -> point);
+  edge* toSecond = new edge();
+  toSecond -> to = &(AdjList[secIndex] -> point);
   toSecond -> weight = input;
   
   edge* current1 = AdjList[firstIndex] -> connections;
   if (current1 == NULL) {
+    cout << "here" << endl;
     AdjList[firstIndex] -> connections = toSecond;
+    cout << "did" << endl;
   }
   else {
     while (current1 -> next != NULL) {
@@ -125,14 +142,16 @@ void graph::addEdge(char first, char second, int input) {
 
     current1 -> next = toSecond;
   }
-  
+
+  /*
   //Now, if both exist, update connection on the second
-  edge* toFirst;
-  toFirst -> to = &(AdjList[secIndex] -> point);
+  edge* toFirst = new edge();
+  toFirst -> to = &(AdjList[firstIndex] -> point);
   toFirst -> weight = input;
   
   edge* current2 = AdjList[secIndex] -> connections;
   if (current2 == NULL) {
+    cout << "here" << endl;
     AdjList[secIndex] -> connections = toFirst;
   }
   else {
@@ -141,7 +160,7 @@ void graph::addEdge(char first, char second, int input) {
     }
 
     current2 -> next = toFirst;
-  }
+    }*/
 
   return;
 }
@@ -149,8 +168,8 @@ void graph::addEdge(char first, char second, int input) {
 void graph::remEdge(char first, char second) {
   //First check if first is in table and get its index
   int i = 0;
-  int firstIndex;
-  while (AdjList[i] != NULL && AdjList[i] -> point != first && i != 20) {
+  int firstIndex = 0;
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != first && i != 20) {
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -163,8 +182,8 @@ void graph::remEdge(char first, char second) {
 
   //Second check if second is in table and get its index
   i = 0;
-  int secIndex;
-  while (AdjList[i] != NULL && AdjList[i] -> point != second && i != 20) {
+  int secIndex = 0;
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != second && i != 20) {
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -190,7 +209,8 @@ void graph::remEdge(char first, char second) {
   else if (current1 != NULL) {
     previous1 -> next = current1 -> next;
   }
-  
+
+  /*
   
   //Now, if both exist, update connection on the second
   edge* previous2 = NULL;
@@ -206,11 +226,33 @@ void graph::remEdge(char first, char second) {
   }
   else if (current2 != NULL) {
     previous2 -> next = current2 -> next;
-  }
+    }*/
   return;
 }
 
 void graph::print() {
+  for (int i = 0; i < 20; i++) {
+
+    if (AdjList[i] != NULL) {
+      cout << "Visited: " << AdjList[i] -> visited << " ";
+
+      cout << "Vertex: " << (AdjList[i] -> point).label << " ";
+
+      edge* current = AdjList[i] -> connections;
+      
+      while (current != NULL) {
+	cout << "[to: " << current -> to -> label << ", weight: " << current -> weight << "]";
+	current = current -> next;
+      }
+      cout << endl;
+    }
+
+    else {
+      cout << "Empty" << endl;
+    }
+    
+  }
+
   //column names:
   cout << "| |";
   for (int i = 0; i < 20; i++) {
@@ -225,46 +267,68 @@ void graph::print() {
 
     cout << "|";
   }
+  cout << endl;
 
+  //cout << "done with header" << endl;
   //the rows:
   for (int i = 0; i < 20; i++) {
-    cout << "|";
-
+    //cout << "row" << i;
+    //cout << "another attempt byt";
+    //cout << "bob";
+    //cout << "why";
     if (AdjList[i] != NULL) {
-      cout << (AdjList[i] -> point).label;
+      //cout << "nonfunny";
+      cout << "|" << (AdjList[i] -> point).label << "|";
+
+      //then loop and print out connections.
+
+      for (int j = 0; j < 20; j++) {
+	cout << "|";
+	int weight = -1;
+	edge* current = AdjList[i] -> connections;
+	
+	if (current == NULL) {
+	  cout << " ";
+	}
+
+	else if (AdjList[j] == NULL) {
+	  cout << " ";
+	}
+	
+	else if (current != NULL && current -> to -> label == (AdjList[j] -> point).label) {
+	  //cout << "first connection found";
+	  cout << current -> weight;
+	}
+
+	else if (current != NULL) {
+	  //cout << "searching";
+	  while (current != NULL && current -> to -> label != (AdjList[j] -> point).label) {
+	    current = current -> next;
+	  }
+	  //cout << "ended search";
+	  if (current != NULL) {
+	    //cout << "here's the weight";
+	    cout << current -> weight;
+	  }
+	  else {
+	    cout << " ";
+	  }
+	  }
+	cout << "|";
+      } 
     }
-    else {
-      cout << " ";
-    }
-    cout << "|";
 
-    for (int j = 0; j < 20; j++) {
-      int connect;
-
-      edge* current = AdjList[i] -> connections;
-
-      if (current -> to == &(AdjList[j] -> point)) {
-	connect = current -> weight;
-      }
-      else {
-      while (current != NULL && current -> to != &(AdjList[j] -> point)) {
-	current = current -> next;
-      }
-
-      if (current != NULL) {
-	connect = current -> weight;
-      }
-      else {
-	connect = -1;
-      }
-      cout << "|" << connect << "|";
+    else if (AdjList[i] == NULL) {
+      cout << "| |";
+      for (int i = 0; i < 20; i++) {
+	cout << "| |";
       }
     }
     cout << endl;
   }
+  
+  return;
 }
 
 void graph::shortestPath(char first, char last) {
-
-  
 }
