@@ -395,7 +395,7 @@ void graph::shortestPath(char first, char last) {
   while (stop) {
     if (AdjList[visiting] != NULL) { //edit here
       cout << "visiting" << (AdjList[visiting] -> point).label << endl;
-      cout << (AdjList[visiting] -> point).label << endl;
+      //cout << (AdjList[visiting] -> point).label << endl;
       AdjList[visiting] -> visited = 1;
 	edge* current = AdjList[visiting] -> connections;
 	edge* best = NULL;
@@ -403,15 +403,20 @@ void graph::shortestPath(char first, char last) {
 
 	while (current != NULL) {
 	  cout << "in loop" << endl;
+	  //cout << "checking connection to " << current -> to -> label << endl;
 	  
 	  for (int j = 0; j < 20; j++) {
-	    if (AdjList[j] != NULL && (AdjList[j] -> point).label != current -> to -> label) {
-	      
+	    if (AdjList[j] != NULL && (AdjList[j] -> point).label == current -> to -> label) {
+
+	      //cout << "found " << (AdjList[j] -> point).label << "at index " << j << endl;
+
 	      int count = (current -> weight) + dist[previous];
 
 	      if (count < dist[j]) { //update shortest distance from first vertex (if a new shortest is found)
+		cout << "update" << endl;
 		dist[j] = count;
-		prevVert[j] = (AdjList[previous] -> point).label;
+		prevVert[j] = (AdjList[visiting] -> point).label;
+		cout << "went to " << (AdjList[j] -> point).label << "from" << prevVert[j];
 	      }
 
 	      //keep it as best if it is unvisted.
@@ -419,18 +424,19 @@ void graph::shortestPath(char first, char last) {
 	      if (best == NULL && AdjList[j] -> visited == 0) {
 		best = current;
 		bestInd = j;
-		cout << "best index is " << bestInd << endl;
-		cout << "this is where " << (AdjList[bestInd] -> point).label << endl;
+		//cout << "best index is " << bestInd << endl;
+		//cout << "this is where " << (AdjList[bestInd] -> point).label << endl;
 	      }
 
 	      else if (best != NULL && AdjList[j] -> visited == 0 && current -> weight < best -> weight) {
-		cout << "found better:" << endl;
-		cout << current -> to -> label << endl;
+		//cout << "found better:" << endl;
+		//cout << current -> to -> label << endl;
 		best = current;
 		bestInd = j;
-		cout << "best index is " << bestInd << endl;
-		cout << "this is where " << (AdjList[bestInd] -> point).label << endl;
+		//cout << "best index is " << bestInd << endl;
+		//cout << "this is where " << (AdjList[bestInd] -> point).label << endl;
 	      }
+
 
 	    }
 	  }
@@ -440,7 +446,7 @@ void graph::shortestPath(char first, char last) {
 
 	//we have the best edge!
 	cout << "best: " << bestInd << endl;
-	cout << best -> to -> label << endl;
+	//cout << best -> to -> label << endl;
 	//set previous to current
 	if (best != NULL && bestInd != -1) {
 	previous = visiting;
@@ -470,7 +476,7 @@ void graph::shortestPath(char first, char last) {
 
   cout << (AdjList[secIndex] -> point).label << endl;
   int index = 0;
-  while (toAdd != firstIndex) {
+  while (toAdd != firstIndex && prevVert[toAdd] != NULL) {
     path[pathEnd] = prevVert[toAdd];
     while (AdjList[index] != NULL && (AdjList[index] -> point).label != prevVert[toAdd] && index < 20) {
       index++;
