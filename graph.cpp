@@ -24,7 +24,7 @@ void graph::addVertex(char input) {
 
   vertex wrapInput;
   wrapInput.label = input; //vertex
-
+  
   location* loc = new location();
   loc -> visited = 0;
   loc -> point = wrapInput;
@@ -72,7 +72,7 @@ void graph::remVertex(char input) { //not working
 	AdjList[j] -> connections = NULL;
       }
       else { 
-      while (current != NULL && current -> to -> label != input) {
+	while (current != NULL && current -> to -> label != input) {
 	previous = current;
 	current = current -> next;
       }
@@ -231,7 +231,7 @@ void graph::remEdge(char first, char second) {
 }
 
 void graph::print() {
-  for (int i = 0; i < 20; i++) {
+  /*for (int i = 0; i < 20; i++) {
 
     if (AdjList[i] != NULL) {
       cout << "Visited: " << AdjList[i] -> visited << " ";
@@ -251,7 +251,7 @@ void graph::print() {
       cout << "Empty" << endl;
     }
     
-  }
+  }*/
 
   //column names:
   cout << "| |";
@@ -352,7 +352,7 @@ void graph::shortestPath(char first, char last) {
   //Second check if second is in table and get its index
   i = 0;
   int secIndex = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != second && i != 20) {
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != last && i != 20) {
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -363,12 +363,16 @@ void graph::shortestPath(char first, char last) {
     return;
   }
 
+  //cout << (AdjList[firstIndex] -> point).label << endl;
+  //cout << (AdjList[secIndex] -> point).label << endl;
+
   //all vertices are first unvisted:
   for (int i = 0; i < 20; i++) {
     if (AdjList[i] != NULL) {
       AdjList[i] -> visited = 0; //unvisited
     }
   }
+  cout << "made all unvisited :)" << endl;
 
   //other things to keep track of:
   char prevVert[20];
@@ -378,54 +382,71 @@ void graph::shortestPath(char first, char last) {
     dist[i] = 9999; //nearly infinite distance initially
   }
 
-  dist[firstIndex] = 0; //distance away from self;
+  cout << "made infinite distances" << endl;
 
+  dist[firstIndex] = 0; //distance away from self;
   int previous = firstIndex;
   int visiting = firstIndex;
+  cout << (AdjList[firstIndex] ->point).label << "first" << endl;
  
   //loop and update this table
   bool stop = true;
   
   while (stop) {
-      if (AdjList[visiting] != NULL) {
-	AdjList[visiting] -> visited = 1;
+    if (AdjList[visiting] != NULL) { //edit here
+      cout << "visiting" << (AdjList[visiting] -> point).label << endl;
+      cout << (AdjList[visiting] -> point).label << endl;
+      AdjList[visiting] -> visited = 1;
 	edge* current = AdjList[visiting] -> connections;
 	edge* best = NULL;
 	int bestInd = -1;
 
 	while (current != NULL) {
+	  cout << "in loop" << endl;
+	  
 	  for (int j = 0; j < 20; j++) {
-	    if (AdjList[j] != *(current -> to)) {
+	    if (AdjList[j] != NULL && (AdjList[j] -> point).label != current -> to -> label) {
 	      
 	      int count = (current -> weight) + dist[previous];
 
 	      if (count < dist[j]) { //update shortest distance from first vertex (if a new shortest is found)
 		dist[j] = count;
-		prevVert[j] = current -> to -> label;
+		prevVert[j] = (AdjList[previous] -> point).label;
 	      }
 
 	      //keep it as best if it is unvisted.
 
 	      if (best == NULL && AdjList[j] -> visited == 0) {
 		best = current;
+		bestInd = j;
+		cout << "best index is " << bestInd << endl;
+		cout << "this is where " << (AdjList[bestInd] -> point).label << endl;
 	      }
 
-	      else if (best != NULL && AdjList[j] -> visited = 0 && current -> weight < best -> weight) {
+	      else if (best != NULL && AdjList[j] -> visited == 0 && current -> weight < best -> weight) {
+		cout << "found better:" << endl;
+		cout << current -> to -> label << endl;
 		best = current;
+		bestInd = j;
+		cout << "best index is " << bestInd << endl;
+		cout << "this is where " << (AdjList[bestInd] -> point).label << endl;
 	      }
 
 	    }
 	  }
-	  current = current -> next; 
+	  current = current -> next;
+	  cout << "next loop will start" << endl;
 	}
 
 	//we have the best edge!
-	
+	cout << "best: " << bestInd << endl;
+	cout << best -> to -> label << endl;
 	//set previous to current
 	if (best != NULL && bestInd != -1) {
 	previous = visiting;
-
+	cout << "previous: " << (AdjList[previous] -> point).label << endl;
 	visiting = bestInd;
+	cout << "going to visit: " << (AdjList[visiting] -> point).label << endl;
 	}
 
 	else { //end loop if no new connection is found
@@ -438,22 +459,31 @@ void graph::shortestPath(char first, char last) {
 
   //Read it out:
   int shortLen = dist[secIndex];
+  cout << shortLen << endl;
+  cout << prevVert[secIndex] << endl;
+
   char path[20];
   int pathEnd = 0; //index in path where it ends
   int toAdd = secIndex;
   path[pathEnd] = (AdjList[secIndex] -> point).label;
   pathEnd++;
-  
+
+  cout << (AdjList[secIndex] -> point).label << endl;
+  int index = 0;
   while (toAdd != firstIndex) {
     path[pathEnd] = prevVert[toAdd];
-    for (int i = 0; i < 20; i++) {
-      if (AdjList[i] != NULL && (AdjList[i] -> point).label == prevVert[toAdd]) {
-	toAdd = i;
-      }
+    while (AdjList[index] != NULL && (AdjList[index] -> point).label != prevVert[toAdd] && index < 20) {
+      index++;
+    }
+
+    if (AdjList[index] != NULL && index < 20) {
+      toAdd = index;
     }
     pathEnd++;
+    cout << (AdjList[secIndex] -> point).label << endl;
   }
 
+  cout << (AdjList[secIndex] -> point).label << endl;
   if (shortLen != 9999) {
 
     cout << "The shortest path from " << (AdjList[firstIndex] -> point).label << "to " << (AdjList[secIndex] -> point).label << ":"<< endl;
@@ -464,11 +494,25 @@ void graph::shortestPath(char first, char last) {
   
   }
   cout << endl;
-  cout << "With distance: " << shortLen;
+  cout << "With distance: " << shortLen << endl;
   }
 
   else {
     cout << "No such path" << endl;
+  }
+
+  for (int i = 0; i < 20; i++) {
+    cout << dist[i] << "|";
+  }
+  cout << endl;
+  for (int i = 0; i < 20; i++) {
+    if (AdjList[i] != NULL) {
+    cout << (AdjList[i] -> point).label << endl;
+    }
+  }
+  cout << endl;
+  for (int i = 0; i < 20; i++) {
+    cout << prevVert[i] << endl;
   }
   
   return;
