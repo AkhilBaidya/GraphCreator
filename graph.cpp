@@ -69,12 +69,12 @@ void graph::remVertex(char input) { //not working
       edge* current = AdjList[j] -> connections;
 
       if (current != NULL && current -> to -> label == input) {
-	AdjList[j] -> connections = NULL;
+	AdjList[j] -> connections = current -> next;
       }
       else { 
 	while (current != NULL && current -> to -> label != input) {
-	previous = current;
-	current = current -> next;
+	  previous = current;
+	  current = current -> next;
       }
       if (current != NULL && current == AdjList[j] -> connections) {
 	AdjList[j] -> connections = current -> next;
