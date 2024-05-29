@@ -374,6 +374,68 @@ void graph::shortestPath(char first, char last) {
   char prevVert[20];
   int dist[20];
 
-  
-  
+  for (int i = 0; i < 20; i++) {
+    dist[i] = 9999; //nearly infinite distance initially
+  }
+
+  dist[firstIndex] = 0; //distance away from self;
+
+  int previous = firstIndex;
+  int visiting = firstIndex;
+ 
+  //loop and update this table
+  bool stop = true;
+  while (stop) {
+    AdjList[visiting] -> visited = 1;
+
+      if (AdjList[i] != NULL) {
+
+	edge* current = AdjList[i] -> connections;
+	edge* best = NULL;
+	int bestInd = -1;
+
+	while (current != NULL) {
+	  for (int j = 0; j < 20; j++) {
+	    if (AdjList[j] != *(current -> to)) {
+	      
+	      int count = (current -> weight) + dist[previous];
+
+	      if (count < dist[j]) { //update shortest distance from first vertex (if a new shortest is found)
+		dist[j] = count;
+		prevVert[j] = current -> to -> label;
+	      }
+
+	      //keep it as best if it is unvisted.
+
+	      if (best == NULL && AdjList[j] -> visited == 0) {
+		best = current;
+	      }
+
+	      else if (best != NULL && AdjList[j] -> visited = 0 && current -> weight < best -> weight) {
+		best = current;
+	      }
+
+	    }
+	  }
+	  current = current -> next; 
+	}
+
+	//we have the best edge!
+	
+	//set previous to current
+	if (best != NULL && bestInd != -1) {
+	previous = visiting;
+
+	visiting = bestInd;
+	}
+
+	else { //end loop if no new connection is found
+	  stop = false;
+	}
+
+	//set current (visiting) to the one we are going to visit 
+    } 
+  }
+
+  return;
 }
