@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#include "graph.h";
+#include "graph.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ int main() {
       char answer;
       cin >> answer;
 
-      graph -> addVertex(answer);
+      data -> addVertex(answer);
     }
     else if (!strcmp(command, "addedge")) {
       char from;
@@ -31,7 +31,7 @@ int main() {
       cout << "of what weight?" << endl;
       cin >> weight;
 
-      graph -> addEdge(from, to, weight);
+      data -> addEdge(from, to, weight);
       
     }
     else if (!strcmp(command, "remvertex")) {
@@ -39,7 +39,7 @@ int main() {
       char answer;
       cin >> answer;
 
-      graph -> remVertex(answer);
+      data -> remVertex(answer);
     }
     else if (!strcmp(command, "remedge")) {
       char from;
@@ -49,11 +49,28 @@ int main() {
       cout << "to where?" << endl;
       cin >> to;
     
-      graph -> remEdge(from, to);
+      data -> remEdge(from, to);
       
     }
     else if (!strcmp(command, "print")) {
-      graph -> print();
+      data -> print();
+    }
+
+    else if (!strcmp(command, "quit")) {
+      running = false;
+      cout << "Quitting!" << endl;
+    }
+
+    else if (!strcmp(command, "getpath")) {
+      char from;
+      char to;
+      cout << "from where?" << endl;
+      cin >> from;
+      cout << "to where?" << endl;
+      cin >> to;
+    
+      data -> shortestPath(from, to);
+   
     }
   }
   return 0;
