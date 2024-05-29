@@ -331,4 +331,49 @@ void graph::print() {
 }
 
 void graph::shortestPath(char first, char last) {
+  //Going to use Djkistra's Algorithm here..
+
+  //First check validity of inputs:
+
+  //First check if first is in table and get its index
+  int i = 0;
+  int firstIndex = 0;
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != first && i != 20) {
+    i++;
+  }
+  if (i != 20 && AdjList[i] != NULL) {
+    firstIndex = i;
+  }
+  else {
+    cout << "First vertex doesn't exist" << endl;
+    return;
+  }
+
+  //Second check if second is in table and get its index
+  i = 0;
+  int secIndex = 0;
+  while (AdjList[i] != NULL && (AdjList[i] -> point).label != second && i != 20) {
+    i++;
+  }
+  if (i != 20 && AdjList[i] != NULL) {
+    secIndex = i;
+  }
+  else {
+    cout << "Second vertex doesn't exist" << endl;
+    return;
+  }
+
+  //all vertices are first unvisted:
+  for (int i = 0; i < 20; i++) {
+    if (AdjList[i] != NULL) {
+      AdjList[i] -> visited = 0; //unvisited
+    }
+  }
+
+  //other things to keep track of:
+  char prevVert[20];
+  int dist[20];
+
+  
+  
 }
