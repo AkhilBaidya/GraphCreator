@@ -53,7 +53,7 @@ void graph::addVertex(char input) {
 void graph::remVertex(char input) { //not working
   //First remove vertex from list:
   int i = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != input && i != 20) {
+  while ((AdjList[i] == NULL || (AdjList[i] != NULL && (AdjList[i] -> point).label != input)) && i != 20) {
     i++;
   }
   if (i != 20) {
@@ -92,7 +92,7 @@ void graph::addEdge(char first, char second, int input) {
   //First check if first is in table and get its index
   int i = 0;
   int firstIndex = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != first && i != 20) {
+  while ((AdjList[i] == NULL || (AdjList[i] != NULL && (AdjList[i] -> point).label != first)) && i != 20) {
     cout << "going" << endl;
     i++;
   }
@@ -107,7 +107,7 @@ void graph::addEdge(char first, char second, int input) {
   //Second check if second is in table and get its index
   i = 0;
   int secIndex = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != second && i != 20) {
+  while ((AdjList[i] == NULL || (AdjList[i] != NULL && (AdjList[i] -> point).label != second)) && i != 20) {
     cout << "going 2" << endl;
     i++;
   }
@@ -169,7 +169,7 @@ void graph::remEdge(char first, char second) {
   //First check if first is in table and get its index
   int i = 0;
   int firstIndex = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != first && i != 20) {
+  while ((AdjList[i] == NULL || (AdjList[i] != NULL && (AdjList[i] -> point).label != first)) && i != 20) {
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -183,7 +183,7 @@ void graph::remEdge(char first, char second) {
   //Second check if second is in table and get its index
   i = 0;
   int secIndex = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != second && i != 20) {
+  while ((AdjList[i] == NULL || (AdjList[i] != NULL && (AdjList[i] -> point).label != second)) && i != 20) {
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -231,7 +231,7 @@ void graph::remEdge(char first, char second) {
 }
 
 void graph::print() {
-  /*for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < 20; i++) {
 
     if (AdjList[i] != NULL) {
       cout << "Visited: " << AdjList[i] -> visited << " ";
@@ -251,7 +251,7 @@ void graph::print() {
       cout << "Empty" << endl;
     }
     
-  }*/
+  }
 
   //column names:
   cout << "| |";
@@ -338,7 +338,7 @@ void graph::shortestPath(char first, char last) {
   //First check if first is in table and get its index
   int i = 0;
   int firstIndex = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != first && i != 20) {
+  while ((AdjList[i] == NULL || (AdjList[i] != NULL && (AdjList[i] -> point).label != first)) && i != 20) {
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -352,7 +352,7 @@ void graph::shortestPath(char first, char last) {
   //Second check if second is in table and get its index
   i = 0;
   int secIndex = 0;
-  while (AdjList[i] != NULL && (AdjList[i] -> point).label != last && i != 20) {
+  while ((AdjList[i] == NULL || (AdjList[i] != NULL && (AdjList[i] -> point).label != last)) && i != 20) {
     i++;
   }
   if (i != 20 && AdjList[i] != NULL) {
@@ -380,6 +380,7 @@ void graph::shortestPath(char first, char last) {
 
   for (int i = 0; i < 20; i++) {
     dist[i] = 9999; //nearly infinite distance initially
+    prevVert[i] = ' ';
   }
 
   cout << "made infinite distances" << endl;
@@ -388,7 +389,7 @@ void graph::shortestPath(char first, char last) {
   int previous = firstIndex;
   int visiting = firstIndex;
   cout << (AdjList[firstIndex] ->point).label << "first" << endl;
- 
+  
   //loop and update this table
   bool stop = true;
   
@@ -409,9 +410,20 @@ void graph::shortestPath(char first, char last) {
 	    if (AdjList[j] != NULL && (AdjList[j] -> point).label == current -> to -> label) {
 
 	      //cout << "found " << (AdjList[j] -> point).label << "at index " << j << endl;
+	      cout << "prev: " << endl;
+	      if (AdjList[previous] != NULL) {
+	      cout << (AdjList[previous] -> point).label << endl;
+	    }
+	      cout << "dist" << dist[previous] << endl;
 
-	      int count = (current -> weight) + dist[previous];
-
+	      cout << "current" << endl;
+	      if (AdjList[visiting] != NULL) {
+		cout << (AdjList[visiting] -> point).label << endl;
+	      }
+	      cout << current -> weight << "daDist" << endl;
+	      
+	      int count = (current -> weight) + dist[visiting];
+	      cout << "distance from init" << count << endl;
 	      if (count < dist[j]) { //update shortest distance from first vertex (if a new shortest is found)
 		cout << "update" << endl;
 		dist[j] = count;
@@ -463,22 +475,31 @@ void graph::shortestPath(char first, char last) {
     } 
   }
 
+  for (int i = 0; i < 20; i++) {
+    if (AdjList[i] != NULL) {
+    cout << (AdjList[i] -> point).label << "|" << prevVert[i] << "|" << dist[i] << "|" << endl;
+    }
+  }
+  
   //Read it out:
   int shortLen = dist[secIndex];
   cout << shortLen << endl;
-  cout << prevVert[secIndex] << endl;
-
+  cout << prevVert[secIndex] << endl;  
+  
   char path[20];
   int pathEnd = 0; //index in path where it ends
   int toAdd = secIndex;
-  path[pathEnd] = (AdjList[secIndex] -> point).label;
-  pathEnd++;
+  path[0] = (AdjList[secIndex] -> point).label;
+  pathEnd = pathEnd + 1;
+  cout << path[0] << endl;
 
   cout << (AdjList[secIndex] -> point).label << endl;
   int index = 0;
-  while (toAdd != firstIndex && prevVert[toAdd] != NULL) {
+
+  while (toAdd != firstIndex && prevVert[toAdd] != ' ') {
     path[pathEnd] = prevVert[toAdd];
-    while (AdjList[index] != NULL && (AdjList[index] -> point).label != prevVert[toAdd] && index < 20) {
+    index = 0;
+    while ((AdjList[index] == NULL || (AdjList[index] != NULL && (AdjList[index] -> point).label != prevVert[toAdd])) && index < 20) {
       index++;
     }
 
@@ -494,8 +515,7 @@ void graph::shortestPath(char first, char last) {
 
     cout << "The shortest path from " << (AdjList[firstIndex] -> point).label << "to " << (AdjList[secIndex] -> point).label << ":"<< endl;
 
-  for (int i = pathEnd; i > 0; i--) {
-
+  for (int i = pathEnd - 1; i > -1; i--) {
     cout << path[i] << "-";
   
   }
@@ -505,20 +525,6 @@ void graph::shortestPath(char first, char last) {
 
   else {
     cout << "No such path" << endl;
-  }
-
-  for (int i = 0; i < 20; i++) {
-    cout << dist[i] << "|";
-  }
-  cout << endl;
-  for (int i = 0; i < 20; i++) {
-    if (AdjList[i] != NULL) {
-    cout << (AdjList[i] -> point).label << endl;
-    }
-  }
-  cout << endl;
-  for (int i = 0; i < 20; i++) {
-    cout << prevVert[i] << endl;
   }
   
   return;
