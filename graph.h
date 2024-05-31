@@ -1,4 +1,16 @@
-/*The graph class*/
+/* Graph Class Header - Akhil Baidya
+
+Date of Submission: 5/31/24
+
+Notes: This file lists the functions and variables inside the Graph Class (such as the adjacency list and functions to add/remove vertices and edges, print the list, and give the shortest path between two vertices)
+
+It also defines the structs for the vertices, edges, and locations (a struct containing vertices and their connections).
+
+Sources: 
+For the syntax of a header guard, I referred to https://www.learncpp.com/cpp-tutorial/header-guards/, the tutorial on learncpp.com by the user Alex. 
+*/
+
+//Header Guard:
 #ifndef GRAPH_H
 #define GRAPH_H
 
@@ -7,22 +19,26 @@
 
 using namespace std;
 
+//Vertex:
 struct vertex {
-  char label;
+  char label; //has name
 };
 
+//Edge:
 struct edge {
-  vertex* to;
-  int weight;
-  edge* next;
+  vertex* to; //points somewhere (directed graph so is not bi-directional)
+  int weight; //value
+  edge* next; //will put edges in linked list of connections
 };
 
+//Location:
 struct location {
-  int visited;
-  vertex point;
-  edge* connections;
+  int visited; //tells whether vertex has been visited
+  vertex point; //contains vertex
+  edge* connections; //contains edges from vertex
 };
 
+//Actual Class:
 class graph {
 
  public:
