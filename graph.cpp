@@ -447,51 +447,67 @@ void graph::shortestPath(char first, char last) {
     }
   }
   
-  //Read it out:
-  int shortLen = dist[secIndex];
+  //Reading the Shortest Path out:
+  
+  int shortLen = dist[secIndex]; //shortest distance
+
+  /*
+    Debugging:
   cout << shortLen << endl;
   cout << prevVert[secIndex] << endl;  
+  */
   
-  char path[20];
-  int pathEnd = 0; //index in path where it ends
-  int toAdd = secIndex;
+  char path[20]; //the path
+  int pathEnd = 0; //index in path array where it ends
+  int toAdd = secIndex; //index of vertex to add to the path
+
+  //Set the first element of the path array as the vertex reached: 
   path[0] = (AdjList[secIndex] -> point).label;
   pathEnd = pathEnd + 1;
-  cout << path[0] << endl;
 
+  /*
+    Debugging:
+  cout << path[0] << endl;
   cout << (AdjList[secIndex] -> point).label << endl;
+  */
+  
   int index = 0;
 
+  //Traverse down the previous vertices (the previous vertex of the last vertex reached and so on, until the first vertex):
   while (toAdd != firstIndex && prevVert[toAdd] != ' ') {
-    path[pathEnd] = prevVert[toAdd];
+    path[pathEnd] = prevVert[toAdd]; //add vertex to the path
     index = 0;
+    
     while ((AdjList[index] == NULL || (AdjList[index] != NULL && (AdjList[index] -> point).label != prevVert[toAdd])) && index < 20) {
-      index++;
+      index++; //find index of previous vertex
     }
     
     if (AdjList[index] != NULL && index < 20) {
-      toAdd = index;
+      toAdd = index; //set next index to look at as the previous vertex's index
     }
-    pathEnd++;
-    cout << (AdjList[secIndex] -> point).label << endl;
+    pathEnd++; //pathEnd helps add to the end of the array (the empty spot right after the most recent entry)
+    //cout << (AdjList[secIndex] -> point).label << endl; (debugging)
   }
   
-  cout << (AdjList[secIndex] -> point).label << endl;
+  //cout << (AdjList[secIndex] -> point).label << endl; (deubgging)
+
+  //Print out path:
   if (shortLen != 9999) {
     
     cout << "The shortest path from " << (AdjList[firstIndex] -> point).label << "to " << (AdjList[secIndex] -> point).label << ":"<< endl;
     
     for (int i = pathEnd - 1; i > -1; i--) {
-      cout << path[i] << "-";
+      cout << path[i] << "-"; //print out path
       
     }
     cout << endl;
-    cout << "With distance: " << shortLen << endl;
+    cout << "With distance: " << shortLen << endl; //print out weight of path
   }
   
   else {
-    cout << "No such path" << endl;
+    cout << "No such path" << endl; //a distance of 9999 means that the vertices are not connected (is the equivalent of infinity in this program)
+
+    //In other words, no total sum of edge weights in any path should exceed 9999 in this program (this serves as an upper limit)
   }
-  
   return;
 }
