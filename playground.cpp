@@ -99,8 +99,6 @@ int main() {
       cout << "To where? (give vertex name)" << endl;
       cin >> to;
 
-      cout << from;
-      cout << to;
       data -> shortestPath(from, to); //get shortest path
     }
   }
