@@ -494,7 +494,7 @@ void graph::shortestPath(char first, char last) {
   //Print out path:
   if (shortLen != 9999) {
     
-    cout << "The shortest path from " << (AdjList[firstIndex] -> point).label << "to " << (AdjList[secIndex] -> point).label << ":"<< endl;
+    cout << "The shortest path from " << (AdjList[firstIndex] -> point).label << " to " << (AdjList[secIndex] -> point).label << ":"<< endl;
     
     for (int i = pathEnd - 1; i > -1; i--) {
       cout << path[i] << "-"; //print out path
