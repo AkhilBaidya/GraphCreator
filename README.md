@@ -1,14 +1,14 @@
 # GraphCreator
 A directed graph with vertices that can be connected by edges (edges travel in a single direction). Can find the shortest path between two vertices!
 
-#Set-Up
+# Set-Up
 The code can be compiled in this manner. For some final .exe file "graphCreator":
 
 g++ -o graphCreator graph.cpp playground.cpp
 
 Then run "./graphCreator" to start the application.
 
-#How to Use + Cautions
+# How to Use + Cautions
 There are 7 commands that can be used to interact with the graph (commands are all case-sensitive and should be entered in lowercase):
 
 1. There is "mkvertex."
@@ -39,5 +39,5 @@ Input this command the name of two vertices to print out the shortest path (leas
 
 This ends the program.
 
-#Sources
+# Sources
 Refer to heading comments in the individual files in this repository.
