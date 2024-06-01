@@ -17,7 +17,7 @@ int main() {
 
   //SET-UP:
   bool running = true; //this loops the command-entry
-  char command[10]; //this will store user commands
+  char command[20]; //this will store user commands
   graph* data = new graph(); //create an empty graph
 
   cout << "Welcome to Graph Creator Ver. 1" << endl;
@@ -98,7 +98,9 @@ int main() {
       cin >> from;
       cout << "To where? (give vertex name)" << endl;
       cin >> to;
-    
+
+      cout << from;
+      cout << to;
       data -> shortestPath(from, to); //get shortest path
     }
   }
