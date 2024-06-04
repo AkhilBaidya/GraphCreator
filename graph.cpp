@@ -398,19 +398,50 @@ void graph::shortestPath(char first, char last) {
 	    }
 	    
 	    //Keep this edge as the best/least costly connection if the vertex it connects to (AdjList[j]) is unvisted and no best edge has been saved:
-	    if (best == NULL && AdjList[j] -> visited == 0) {
-	      best = current;
-	      bestInd = j;
+	    if (best == NULL && AdjList[j] -> visited == 0 && !(j != secIndex && AdjList[j] -> connections == NULL)) {
+	      //also make sure that the selected edge isn't a dead end that leads nowhere
+	      
+	      //also make sure that the selected edge doesn't lead back to the first node:
+	      edge* nextV = AdjList[j] -> connections;
+	      int nextVal = 9999;
+	      char nextName = '@';
+	      
+	      while (nextV != NULL) {
+		if (nextV -> weight <= nextVal) {
+		  nextVal = nextV -> weight;
+		  nextName = nextV -> to -> label;
+		}
+		nextV = nextV -> next;
+	      }
+
+	      if (nextName != (AdjList[firstIndex] -> point).label) { //if the algorithm will not loop
+		best = current;
+		bestInd = j;
+	      }
 	      //cout << "best index is " << bestInd << endl;
 	      //cout << "this is where " << (AdjList[bestInd] -> point).label << endl; (debugging)
 	    }
 
 	    //Same as above, but when there is a best currently saved, the new edge must have a smaller weight to replace it:
-	    else if (best != NULL && AdjList[j] -> visited == 0 && current -> weight < best -> weight) {
+	    else if (best != NULL && AdjList[j] -> visited == 0 && current -> weight < best -> weight  && !(j != secIndex && AdjList[j] -> connections == NULL)) {
 	      //cout << "found better:" << endl;
 	      //cout << current -> to -> label << endl; (debugging)
-	      best = current;
-	      bestInd = j;
+	      edge* nextV = AdjList[j] -> connections;
+	      int nextVal = 9999;
+	      char nextName = '@';
+	      
+	      while (nextV != NULL) {
+		if (nextV -> weight <= nextVal) {
+		  nextVal = nextV -> weight;
+		  nextName = nextV -> to -> label;
+		}
+		nextV = nextV -> next;
+	      }
+	      
+	      if (nextName != (AdjList[firstIndex] -> point).label) { //if the algorithm will not loop
+		best = current;
+		bestInd = j;
+	      }
 	      //cout << "best index is " << bestInd << endl;
 	      //cout << "this is where " << (AdjList[bestInd] -> point).label << endl; (debugging)
 	    }
