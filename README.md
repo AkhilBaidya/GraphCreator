@@ -13,7 +13,7 @@ There are 7 commands that can be used to interact with the graph (commands are a
 
 1. There is "mkvertex."
 
-Input this command and a vertex name to create a vertex. Vertex names need to be unique from existing vertices' names. Additionally, they are restricted to being one character, such as 'a.'
+Input this command and a vertex name to create a vertex. Vertex names need to be unique from existing vertices' names. Additionally, they are restricted to being one character, such as 'a.' (addition: do not name a vertex '@' for the sake of some checks in the code)
 
 2. There is "mkedge."
 
